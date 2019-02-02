@@ -2,6 +2,7 @@ library(readxl)
 library(readr)
 library(ggplot2)
 library(dplyr, warn.conflicts = FALSE)
+library(tidyr)
 
 download.file("https://www.co2.earth/images/data/2100-projections_climate-scoreboard_2015-1214.xlsx",
               destfile = "global.xlsx")
