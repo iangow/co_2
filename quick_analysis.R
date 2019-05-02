@@ -41,13 +41,13 @@ target_year <- 2050
 
 current <-
     australia %>% 
-    filter(year==2020) %>%
+    filter(year==current_year) %>%
     select(co_2_aus_alt) %>% 
     pull()
 
 green <- 
     australia %>%
-    filter(year >= 2019) %>%
+    filter(year >= current_year) %>%
     mutate(co_2_aus_green = if_else(year > current_year, 
                                     (target_year - year)/(target_year - current_year) * current,
                                     co_2_aus)) %>%
