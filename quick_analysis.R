@@ -36,14 +36,33 @@ australia_alt <-
            category == "Trajectory to minus 26% target (in 2030)" & year > 2019L) %>%
     select(-category)
 
+current_year <- 2020
+target_year <- 2050
+
+current <-
+    australia %>% 
+    filter(year==2020) %>%
+    select(co_2_aus_alt) %>% 
+    pull()
+
+green <- 
+    australia %>%
+    filter(year >= 2019) %>%
+    mutate(co_2_aus_green = if_else(year > current_year, 
+                                    (target_year - year)/(target_year - current_year) * current,
+                                    co_2_aus)) %>%
+    select(year, co_2_aus_green)
+
 australia <-
     australia_base %>%
-    left_join(australia_alt, by = "year")
+    left_join(australia_alt, by = "year") %>% 
+    left_join(green, by = "year")
 
 all_data <-
     global %>%
     inner_join(australia, by = "year") %>%
-    mutate(global_alt = global_co2 - co_2_aus)  %>%
+    mutate(global_lnp = global_co2 + co_2_aus_alt - co_2_aus,
+           global_green = global_co2 + co_2_aus_green - co_2_aus) %>%
     gather(key = "category", value = "co_2", -year)
 
 all_data %>%
