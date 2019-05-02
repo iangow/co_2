@@ -43,7 +43,7 @@ australia <-
 all_data <-
     global %>%
     inner_join(australia, by = "year") %>%
-    mutate(global_alt = global_co2 - co_2_aus + co_2_aus_alt) %>%
+    mutate(global_alt = global_co2 - co_2_aus)  %>%
     gather(key = "category", value = "co_2", -year)
 
 all_data %>%
